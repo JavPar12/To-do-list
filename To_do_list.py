@@ -2,75 +2,76 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 import json
 
-
-tasks = []
-
+tasks = []  # Create an empty list to store tasks
 
 def add_task():
-    task_string = task_field.get()
+    # Function to add a task to the tasks list
+    task_string = task_field.get()  # Get the task from the entry field
     if len(task_string) == 0:
+        # Show an error message if the task field is empty
         messagebox.showinfo('Error', 'Field is Empty.')
     else:
-        tasks.append(task_string)
-        save_tasks()
-        list_update()
-        task_field.delete(0, 'end')
-
+        tasks.append(task_string)  # Add the task to the tasks list
+        save_tasks()  # Save the tasks to a JSON file
+        list_update()  # Update the task list in the GUI
+        task_field.delete(0, 'end')  # Clear the task entry field
 
 def delete_task():
-    selected_task = task_listbox.curselection()
+    # Function to delete a task from the tasks list
+    selected_task = task_listbox.curselection()  # Get the index of the selected task
     if selected_task:
         task_index = selected_task[0]
-        task = task_listbox.get(task_index)
+        task = task_listbox.get(task_index)  # Get the task from the selected index
         confirmation = messagebox.askyesno('Confirmation', f"Are you sure you want to delete '{task}'?")
         if confirmation:
-            tasks.remove(task)
-            save_tasks()
-            list_update()
-
+            tasks.remove(task)  # Remove the task from the tasks list
+            save_tasks()  # Save the tasks to a JSON file
+            list_update()  # Update the task list in the GUI
 
 def delete_all_tasks():
+    # Function to delete all tasks from the tasks list
     confirmation = messagebox.askyesno('Delete All', 'Are you sure you want to delete all tasks?')
     if confirmation:
-        tasks.clear()
-        save_tasks()
-        list_update()
-
+        tasks.clear()  # Clear the tasks list
+        save_tasks()  # Save the tasks to a JSON file
+        list_update()  # Update the task list in the GUI
 
 def list_update():
-    task_listbox.delete(0, "end")
-    sorted_tasks = sorted(tasks)
+    # Function to update the task list in the GUI
+    task_listbox.delete(0, "end")  # Clear the task listbox
+    sorted_tasks = sorted(tasks)  # Sort the tasks list
     for task in sorted_tasks:
-        task_listbox.insert("end", task)
-
+        task_listbox.insert("end", task)  # Insert each task into the task listbox
 
 def close():
-    save_tasks()
-    guiWindow.destroy()
-
+    # Function to save the tasks and close the GUI window
+    save_tasks()  # Save the tasks to a JSON file
+    guiWindow.destroy()  # Destroy the GUI window
 
 def save_tasks():
+    # Function to save the tasks to a JSON file
     with open('tasks.json', 'w') as file:
         json.dump(tasks, file)
 
-
 def load_tasks():
+    # Function to load tasks from a JSON file
     try:
         with open('tasks.json', 'r') as file:
             tasks.extend(json.load(file))
     except FileNotFoundError:
         pass
 
-
 if __name__ == "__main__":
+    # Create the main GUI window
     guiWindow = tk.Tk()
     guiWindow.title("To-Do List")
     guiWindow.geometry("500x450")
     guiWindow.resizable(0, 0)
     guiWindow.configure(bg="#E0F0F0")
 
-    load_tasks()
+    load_tasks()  # Load tasks from the JSON file
 
+    # Create frames for the header, functions, and task list
     header_frame = tk.Frame(guiWindow, bg="#E0F0F0")
     functions_frame = tk.Frame(guiWindow, bg="#E0F0F0")
     listbox_frame = tk.Frame(guiWindow, bg="#E0F0F0")
@@ -174,6 +175,8 @@ if __name__ == "__main__":
                     )
 
     guiWindow.mainloop()
+
+    #Test
 
 import json
 
